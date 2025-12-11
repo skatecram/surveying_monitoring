@@ -3,8 +3,8 @@
 @section('title', 'Projekt bearbeiten')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
-    <h2 class="text-2xl font-bold mb-6">Projekt bearbeiten</h2>
+<div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
+    <h2 class="text-xl sm:text-2xl font-bold mb-6">Projekt bearbeiten</h2>
 
     <form action="{{ route('projects.update', $project) }}" method="POST">
         @csrf
@@ -67,8 +67,8 @@
             @enderror
         </div>
 
-        <div class="flex justify-between">
-            <a href="{{ route('projects.show', $project) }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+        <div class="flex flex-col sm:flex-row sm:justify-between gap-2">
+            <a href="{{ route('projects.show', $project) }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded text-center">
                 Abbrechen
             </a>
             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">

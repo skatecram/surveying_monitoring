@@ -14,8 +14,8 @@
 </head>
 <body class="bg-gray-100">
     <nav class="bg-blue-900 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Überwachungs Programm</h1>
+        <div class="container mx-auto flex flex-wrap justify-between items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-bold">Überwachungs Programm</h1>
             <div class="space-x-4">
                 <a href="{{ route('projects.index') }}" class="hover:underline">Projekte</a>
             </div>

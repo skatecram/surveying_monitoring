@@ -75,15 +75,17 @@
                     
                     $chartData[] = $pointData;
                     
-                    // Get latest measurement for vector plot
-                    $latestMeasurement = $sortedMeasurements->last();
-                    $vectorData[] = [
-                        'punkt' => $punkt,
-                        'x0' => round($nullMeasurement->E, 3),
-                        'y0' => round($nullMeasurement->N, 3),
-                        'x1' => round($latestMeasurement->E, 3),
-                        'y1' => round($latestMeasurement->N, 3),
-                    ];
+                    // Add all measurements for vector plot (not just latest)
+                    foreach ($sortedMeasurements as $measurement) {
+                        $vectorData[] = [
+                            'punkt' => $punkt,
+                            'date' => $measurement->date->format('Y-m-d'),
+                            'x0' => round($nullMeasurement->E, 3),
+                            'y0' => round($nullMeasurement->N, 3),
+                            'x1' => round($measurement->E, 3),
+                            'y1' => round($measurement->N, 3),
+                        ];
+                    }
                 }
             @endphp
             
@@ -200,24 +202,42 @@
             const centerX = (minX + maxX) / 2;
             const centerY = (minY + maxY) / 2;
             
-            // Create scatter datasets for start and end points
+            // Group vector data by point
+            const vectorsByPoint = {};
+            vectorData.forEach(v => {
+                if (!vectorsByPoint[v.punkt]) {
+                    vectorsByPoint[v.punkt] = [];
+                }
+                vectorsByPoint[v.punkt].push(v);
+            });
+            
+            // Create scatter datasets for each measurement from null point
             const vectorDatasets = [];
-            vectorData.forEach((v, index) => {
-                const dx = (v.x1 - v.x0) * 1000; // in mm
-                const dy = (v.y1 - v.y0) * 1000; // in mm
+            let colorIndex = 0;
+            Object.keys(vectorsByPoint).forEach(punkt => {
+                const vectors = vectorsByPoint[punkt];
+                const pointColor = colors[colorIndex % colors.length];
                 
-                vectorDatasets.push({
-                    label: v.punkt,
-                    data: [
-                        { x: (v.x0 - centerX) * 1000, y: (v.y0 - centerY) * 1000 },
-                        { x: (v.x1 - centerX) * 1000, y: (v.y1 - centerY) * 1000 }
-                    ],
-                    borderColor: colors[index % colors.length],
-                    backgroundColor: colors[index % colors.length],
-                    showLine: true,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
+                vectors.forEach((v, measurementIndex) => {
+                    const dx = (v.x1 - v.x0) * 1000; // in mm
+                    const dy = (v.y1 - v.y0) * 1000; // in mm
+                    
+                    vectorDatasets.push({
+                        label: v.punkt + ' (' + v.date + ')',
+                        data: [
+                            { x: (v.x0 - centerX) * 1000, y: (v.y0 - centerY) * 1000 },
+                            { x: (v.x1 - centerX) * 1000, y: (v.y1 - centerY) * 1000 }
+                        ],
+                        borderColor: pointColor,
+                        backgroundColor: pointColor,
+                        showLine: true,
+                        pointRadius: measurementIndex === vectors.length - 1 ? 6 : 4,
+                        pointHoverRadius: 8,
+                        borderWidth: measurementIndex === vectors.length - 1 ? 3 : 2,
+                    });
                 });
+                
+                colorIndex++;
             });
             
             new Chart(ctx4, {

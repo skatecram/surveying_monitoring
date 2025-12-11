@@ -185,10 +185,10 @@
                 }
             });
             
-            // Chart 4: Vector plot
+            // Chart 4: Vector plot (Scatter Chart)
             const ctx4 = document.getElementById('chart-xy-vector').getContext('2d');
             
-            // Create scatter datasets for vectors starting at origin [0,0]
+            // Create scatter datasets for displacement endpoints
             const vectorDatasets = [];
             vectorData.forEach((v, index) => {
                 const dx = (v.x1 - v.x0) * 1000; // displacement in mm
@@ -197,14 +197,12 @@
                 vectorDatasets.push({
                     label: v.punkt,
                     data: [
-                        { x: 0, y: 0 },
                         { x: dx, y: dy }
                     ],
                     borderColor: colors[index % colors.length],
                     backgroundColor: colors[index % colors.length],
-                    showLine: true,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
+                    pointRadius: 8,
+                    pointHoverRadius: 10,
                 });
             });
             

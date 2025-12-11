@@ -213,12 +213,8 @@
             let maxAbsX = 0;
             let maxAbsY = 0;
             chartData.forEach(point => {
-                point.dE.forEach(dE => {
-                    maxAbsX = Math.max(maxAbsX, Math.abs(dE));
-                });
-                point.dN.forEach(dN => {
-                    maxAbsY = Math.max(maxAbsY, Math.abs(dN));
-                });
+                maxAbsX = Math.max(maxAbsX, ...point.dE.map(Math.abs));
+                maxAbsY = Math.max(maxAbsY, ...point.dN.map(Math.abs));
             });
             
             // Use the same range for both axes to ensure square appearance

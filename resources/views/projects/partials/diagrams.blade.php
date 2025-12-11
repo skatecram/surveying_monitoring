@@ -185,7 +185,7 @@
                 }
             });
             
-            // Chart 4: Vector plot (Scatter Chart)
+            // Chart 4: Displacement endpoints (Scatter Chart)
             const ctx4 = document.getElementById('chart-xy-vector').getContext('2d');
             
             // Create scatter datasets for displacement endpoints

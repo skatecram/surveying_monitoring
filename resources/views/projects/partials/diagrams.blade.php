@@ -239,8 +239,14 @@
                     borderColor: color,
                     backgroundColor: color,
                     showLine: true,
-                    pointRadius: dataPoints.map(p => p.isNull ? 8 : 5),
-                    pointStyle: dataPoints.map(p => p.isNull ? 'rectRot' : 'circle'),
+                    pointRadius: (context) => {
+                        const point = context.dataset.data[context.dataIndex];
+                        return point.isNull ? 8 : 5;
+                    },
+                    pointStyle: (context) => {
+                        const point = context.dataset.data[context.dataIndex];
+                        return point.isNull ? 'rectRot' : 'circle';
+                    },
                     pointHoverRadius: 9,
                 });
             });
@@ -264,15 +270,6 @@
                                     return context.dataset.label + type + ': (' + 
                                            context.parsed.x.toFixed(2) + ', ' + 
                                            context.parsed.y.toFixed(2) + ') - ' + dataPoint.date;
-                                }
-                            }
-                        },
-                        legend: {
-                            display: true,
-                            labels: {
-                                generateLabels: function(chart) {
-                                    const original = Chart.defaults.plugins.legend.labels.generateLabels(chart);
-                                    return original;
                                 }
                             }
                         }

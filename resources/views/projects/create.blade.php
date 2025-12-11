@@ -1,0 +1,49 @@
+@extends('layouts.app')
+
+@section('title', 'Neues Projekt erstellen')
+
+@section('content')
+<div class="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-6">Neues Projekt erstellen</h2>
+
+    <form action="{{ route('projects.store') }}" method="POST">
+        @csrf
+        
+        <div class="mb-4">
+            <label for="number" class="block text-gray-700 font-bold mb-2">Auftragsnummer:</label>
+            <input type="text" name="number" id="number" value="{{ old('number') }}" 
+                   class="w-full px-3 py-2 border rounded @error('number') border-red-500 @enderror" required>
+            @error('number')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700 font-bold mb-2">Auftrag (Projektname):</label>
+            <input type="text" name="name" id="name" value="{{ old('name') }}" 
+                   class="w-full px-3 py-2 border rounded @error('name') border-red-500 @enderror" required>
+            @error('name')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="mb-4">
+            <label for="bearbeiter" class="block text-gray-700 font-bold mb-2">Bearbeiter:</label>
+            <input type="text" name="bearbeiter" id="bearbeiter" value="{{ old('bearbeiter') }}" 
+                   class="w-full px-3 py-2 border rounded @error('bearbeiter') border-red-500 @enderror" required>
+            @error('bearbeiter')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="flex justify-between">
+            <a href="{{ route('projects.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+                Abbrechen
+            </a>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                Erstellen
+            </button>
+        </div>
+    </form>
+</div>
+@endsection

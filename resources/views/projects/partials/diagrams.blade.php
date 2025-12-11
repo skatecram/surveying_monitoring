@@ -188,29 +188,17 @@
             // Chart 4: Vector plot
             const ctx4 = document.getElementById('chart-xy-vector').getContext('2d');
             
-            // Calculate center and bounds
-            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-            vectorData.forEach(v => {
-                minX = Math.min(minX, v.x0, v.x1);
-                maxX = Math.max(maxX, v.x0, v.x1);
-                minY = Math.min(minY, v.y0, v.y1);
-                maxY = Math.max(maxY, v.y0, v.y1);
-            });
-            
-            const centerX = (minX + maxX) / 2;
-            const centerY = (minY + maxY) / 2;
-            
-            // Create scatter datasets for start and end points
+            // Create scatter datasets for vectors starting at origin [0,0]
             const vectorDatasets = [];
             vectorData.forEach((v, index) => {
-                const dx = (v.x1 - v.x0) * 1000; // in mm
-                const dy = (v.y1 - v.y0) * 1000; // in mm
+                const dx = (v.x1 - v.x0) * 1000; // displacement in mm
+                const dy = (v.y1 - v.y0) * 1000; // displacement in mm
                 
                 vectorDatasets.push({
                     label: v.punkt,
                     data: [
-                        { x: (v.x0 - centerX) * 1000, y: (v.y0 - centerY) * 1000 },
-                        { x: (v.x1 - centerX) * 1000, y: (v.y1 - centerY) * 1000 }
+                        { x: 0, y: 0 },
+                        { x: dx, y: dy }
                     ],
                     borderColor: colors[index % colors.length],
                     backgroundColor: colors[index % colors.length],
@@ -227,8 +215,8 @@
                     responsive: true,
                     maintainAspectRatio: true,
                     scales: {
-                        x: { title: { display: true, text: 'ΔE (mm) von Zentrum' } },
-                        y: { title: { display: true, text: 'ΔN (mm) von Zentrum' } }
+                        x: { title: { display: true, text: 'ΔE (mm)' } },
+                        y: { title: { display: true, text: 'ΔN (mm)' } }
                     },
                     plugins: {
                         tooltip: {

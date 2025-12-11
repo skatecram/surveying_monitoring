@@ -209,15 +209,36 @@
                 });
             });
             
+            // Calculate symmetric axis ranges to center (0,0)
+            let maxAbsX = 0;
+            let maxAbsY = 0;
+            chartData.forEach(point => {
+                maxAbsX = Math.max(maxAbsX, ...point.dE.map(Math.abs));
+                maxAbsY = Math.max(maxAbsY, ...point.dN.map(Math.abs));
+            });
+            
+            // Use the same range for both axes to ensure square appearance
+            const maxAbs = Math.max(maxAbsX, maxAbsY);
+            const axisRange = maxAbs > 0 ? maxAbs * 1.1 : 10; // Add 10% padding, or default to 10 if no data
+            
             new Chart(ctx4, {
                 type: 'scatter',
                 data: { datasets: vectorDatasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
+                    aspectRatio: 1,
                     scales: {
-                        x: { title: { display: true, text: 'ΔE (mm)' } },
-                        y: { title: { display: true, text: 'ΔN (mm)' } }
+                        x: { 
+                            title: { display: true, text: 'ΔE (mm)' },
+                            min: -axisRange,
+                            max: axisRange
+                        },
+                        y: { 
+                            title: { display: true, text: 'ΔN (mm)' },
+                            min: -axisRange,
+                            max: axisRange
+                        }
                     },
                     plugins: {
                         tooltip: {

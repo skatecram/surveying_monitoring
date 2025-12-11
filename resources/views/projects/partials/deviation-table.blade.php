@@ -61,10 +61,10 @@
                             <tr class="border-b bg-blue-50">
                                 <td class="px-3 py-2 font-bold">Nullmessung</td>
                                 <td class="px-3 py-2">{{ $nullMeasurement->date->format('d.m.Y') }}</td>
-                                <td class="px-3 py-2">0.00</td>
-                                <td class="px-3 py-2">0.00</td>
-                                <td class="px-3 py-2">0.00</td>
-                                <td class="px-3 py-2">0.00</td>
+                                <td class="px-3 py-2">{{ number_format(0, 2) }}</td>
+                                <td class="px-3 py-2">{{ number_format(0, 2) }}</td>
+                                <td class="px-3 py-2">{{ number_format(0, 2) }}</td>
+                                <td class="px-3 py-2">{{ number_format(0, 2) }}</td>
                             </tr>
                             
                             @php $prevMeasurement = null; @endphp

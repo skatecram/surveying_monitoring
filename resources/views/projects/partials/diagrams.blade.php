@@ -55,10 +55,10 @@
                     
                     // Add null measurement as the first data point (0 deviation)
                     $pointData['dates'][] = $nullMeasurement->date->format('Y-m-d');
-                    $pointData['dE'][] = 0;
-                    $pointData['dN'][] = 0;
-                    $pointData['dL'][] = 0;
-                    $pointData['dH'][] = 0;
+                    $pointData['dE'][] = 0.00;
+                    $pointData['dN'][] = 0.00;
+                    $pointData['dL'][] = 0.00;
+                    $pointData['dH'][] = 0.00;
                     
                     foreach ($sortedMeasurements as $measurement) {
                         $dE = ($measurement->E - $nullMeasurement->E) * 1000;

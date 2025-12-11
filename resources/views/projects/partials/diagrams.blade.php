@@ -56,7 +56,7 @@
                     foreach ($sortedMeasurements as $measurement) {
                         $dE = ($measurement->E - $nullMeasurement->E) * 1000;
                         $dN = ($measurement->N - $nullMeasurement->N) * 1000;
-                        $dL = sqrt(pow($dE, 2) + pow($dN, 2));
+                        $dL = \sqrt(\pow($dE, 2) + \pow($dN, 2));
                         $dH = ($measurement->H - $nullMeasurement->H) * 1000;
                         
                         $pointData['dates'][] = $measurement->date->format('Y-m-d');

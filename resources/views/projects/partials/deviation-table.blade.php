@@ -23,6 +23,15 @@
         // Group control measurements by punkt
         $controlByPoint = $project->controlMeasurements->groupBy('punkt')->sortKeys();
         $nullByPoint = $project->nullMeasurements->keyBy('punkt');
+        
+        // Helper function for threshold class
+        $getThresholdClass = function($value, $warning, $caution, $alarm) {
+            $abs = \abs($value);
+            if ($abs >= $alarm) return 'threshold-alarm';
+            if ($abs >= $caution) return 'threshold-caution';
+            if ($abs >= $warning) return 'threshold-warning';
+            return '';
+        };
     @endphp
 
     @if($controlByPoint->count() > 0 && $nullByPoint->count() > 0)
@@ -54,32 +63,24 @@
                                     // Calculate deviations from null measurement
                                     $dE_null = ($measurement->E - $nullMeasurement->E) * 1000;
                                     $dN_null = ($measurement->N - $nullMeasurement->N) * 1000;
-                                    $dL_null = sqrt(pow($dE_null, 2) + pow($dN_null, 2));
+                                    $dL_null = \sqrt(\pow($dE_null, 2) + \pow($dN_null, 2));
                                     $dH_null = ($measurement->H - $nullMeasurement->H) * 1000;
-                                    
-                                    function getThresholdClass($value, $warning, $caution, $alarm) {
-                                        $abs = abs($value);
-                                        if ($abs >= $alarm) return 'threshold-alarm';
-                                        if ($abs >= $caution) return 'threshold-caution';
-                                        if ($abs >= $warning) return 'threshold-warning';
-                                        return '';
-                                    }
                                 @endphp
                                 
                                 <!-- Null measurement comparison -->
                                 <tr class="border-b">
                                     <td class="px-3 py-2">Nullmessung</td>
                                     <td class="px-3 py-2">{{ $measurement->date->format('d.m.Y') }}</td>
-                                    <td class="px-3 py-2 {{ getThresholdClass($dE_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-3 py-2 {{ $getThresholdClass($dE_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dE_null, 2) }}
                                     </td>
-                                    <td class="px-3 py-2 {{ getThresholdClass($dN_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-3 py-2 {{ $getThresholdClass($dN_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dN_null, 2) }}
                                     </td>
-                                    <td class="px-3 py-2 {{ getThresholdClass($dL_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-3 py-2 {{ $getThresholdClass($dL_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dL_null, 2) }}
                                     </td>
-                                    <td class="px-3 py-2 {{ getThresholdClass($dH_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-3 py-2 {{ $getThresholdClass($dH_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dH_null, 2) }}
                                     </td>
                                 </tr>
@@ -89,7 +90,7 @@
                                         // Calculate deviations from previous measurement
                                         $dE_prev = ($measurement->E - $prevMeasurement->E) * 1000;
                                         $dN_prev = ($measurement->N - $prevMeasurement->N) * 1000;
-                                        $dL_prev = sqrt(pow($dE_prev, 2) + pow($dN_prev, 2));
+                                        $dL_prev = \sqrt(\pow($dE_prev, 2) + \pow($dN_prev, 2));
                                         $dH_prev = ($measurement->H - $prevMeasurement->H) * 1000;
                                     @endphp
                                     

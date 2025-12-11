@@ -188,21 +188,24 @@
             // Chart 4: Displacement endpoints (Scatter Chart)
             const ctx4 = document.getElementById('chart-xy-vector').getContext('2d');
             
-            // Create scatter datasets for displacement endpoints
+            // Create scatter datasets for all displacement points
             const vectorDatasets = [];
-            vectorData.forEach((v, index) => {
-                const dx = (v.x1 - v.x0) * 1000; // displacement in mm
-                const dy = (v.y1 - v.y0) * 1000; // displacement in mm
+            chartData.forEach((point, index) => {
+                // Create array of all displacement points for this survey point
+                const displacementPoints = point.dE.map((dE, i) => ({
+                    x: dE,
+                    y: point.dN[i]
+                }));
                 
                 vectorDatasets.push({
-                    label: v.punkt,
-                    data: [
-                        { x: dx, y: dy }
-                    ],
+                    label: point.punkt,
+                    data: displacementPoints,
                     borderColor: colors[index % colors.length],
                     backgroundColor: colors[index % colors.length],
-                    pointRadius: 8,
-                    pointHoverRadius: 10,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    showLine: true,
+                    tension: 0.1,
                 });
             });
             

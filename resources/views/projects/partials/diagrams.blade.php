@@ -75,15 +75,31 @@
                     
                     $chartData[] = $pointData;
                     
-                    // Get latest measurement for vector plot
-                    $latestMeasurement = $sortedMeasurements->last();
-                    $vectorData[] = [
+                    // Collect all measurements for vector plot (including null measurement)
+                    $pointVectorData = [
                         'punkt' => $punkt,
-                        'x0' => round($nullMeasurement->E, 3),
-                        'y0' => round($nullMeasurement->N, 3),
-                        'x1' => round($latestMeasurement->E, 3),
-                        'y1' => round($latestMeasurement->N, 3),
+                        'measurements' => []
                     ];
+                    
+                    // Add null measurement as the reference point
+                    $pointVectorData['measurements'][] = [
+                        'E' => round($nullMeasurement->E, 3),
+                        'N' => round($nullMeasurement->N, 3),
+                        'date' => $nullMeasurement->date->format('Y-m-d'),
+                        'isNull' => true
+                    ];
+                    
+                    // Add all control measurements
+                    foreach ($sortedMeasurements as $measurement) {
+                        $pointVectorData['measurements'][] = [
+                            'E' => round($measurement->E, 3),
+                            'N' => round($measurement->N, 3),
+                            'date' => $measurement->date->format('Y-m-d'),
+                            'isNull' => false
+                        ];
+                    }
+                    
+                    $vectorData[] = $pointVectorData;
                 }
             @endphp
             
@@ -188,35 +204,50 @@
             // Chart 4: Vector plot
             const ctx4 = document.getElementById('chart-xy-vector').getContext('2d');
             
-            // Calculate center and bounds
+            // Calculate center and bounds from all measurements
             let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-            vectorData.forEach(v => {
-                minX = Math.min(minX, v.x0, v.x1);
-                maxX = Math.max(maxX, v.x0, v.x1);
-                minY = Math.min(minY, v.y0, v.y1);
-                maxY = Math.max(maxY, v.y0, v.y1);
+            vectorData.forEach(pointData => {
+                pointData.measurements.forEach(m => {
+                    minX = Math.min(minX, m.E);
+                    maxX = Math.max(maxX, m.E);
+                    minY = Math.min(minY, m.N);
+                    maxY = Math.max(maxY, m.N);
+                });
             });
             
             const centerX = (minX + maxX) / 2;
             const centerY = (minY + maxY) / 2;
             
-            // Create scatter datasets for start and end points
+            // Create scatter datasets for all measurements
             const vectorDatasets = [];
-            vectorData.forEach((v, index) => {
-                const dx = (v.x1 - v.x0) * 1000; // in mm
-                const dy = (v.y1 - v.y0) * 1000; // in mm
+            vectorData.forEach((pointData, index) => {
+                const measurements = pointData.measurements;
+                const color = colors[index % colors.length];
                 
+                // Create data points for all measurements
+                const dataPoints = measurements.map(m => ({
+                    x: (m.E - centerX) * 1000,
+                    y: (m.N - centerY) * 1000,
+                    date: m.date,
+                    isNull: m.isNull
+                }));
+                
+                // Add dataset with lines connecting the measurements
                 vectorDatasets.push({
-                    label: v.punkt,
-                    data: [
-                        { x: (v.x0 - centerX) * 1000, y: (v.y0 - centerY) * 1000 },
-                        { x: (v.x1 - centerX) * 1000, y: (v.y1 - centerY) * 1000 }
-                    ],
-                    borderColor: colors[index % colors.length],
-                    backgroundColor: colors[index % colors.length],
+                    label: pointData.punkt,
+                    data: dataPoints,
+                    borderColor: color,
+                    backgroundColor: color,
                     showLine: true,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
+                    pointRadius: (context) => {
+                        const point = context.dataset.data[context.dataIndex];
+                        return point.isNull ? 8 : 5;
+                    },
+                    pointStyle: (context) => {
+                        const point = context.dataset.data[context.dataIndex];
+                        return point.isNull ? 'rectRot' : 'circle';
+                    },
+                    pointHoverRadius: 9,
                 });
             });
             
@@ -234,9 +265,11 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return context.dataset.label + ': (' + 
+                                    const dataPoint = context.dataset.data[context.dataIndex];
+                                    const type = dataPoint.isNull ? ' (Nullmessung)' : '';
+                                    return context.dataset.label + type + ': (' + 
                                            context.parsed.x.toFixed(2) + ', ' + 
-                                           context.parsed.y.toFixed(2) + ')';
+                                           context.parsed.y.toFixed(2) + ') - ' + dataPoint.date;
                                 }
                             }
                         }

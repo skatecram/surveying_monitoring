@@ -1,5 +1,5 @@
 <div>
-    <h3 class="text-xl font-bold mb-4">Diagramme</h3>
+    <h3 class="text-lg sm:text-xl font-bold mb-4">Diagramme</h3>
     
     @php
         $controlByPoint = $project->controlMeasurements->groupBy('punkt')->sortKeys();
@@ -9,27 +9,35 @@
     
     @if($hasData)
         <!-- Chart 1: ΔE and ΔN over time -->
-        <div class="mb-8 bg-white p-4 rounded border">
-            <h4 class="font-bold mb-3">Diagramm 1: ΔE und ΔN je Punkt über Zeit</h4>
-            <canvas id="chart-xy-shift" height="80"></canvas>
+        <div class="mb-6 sm:mb-8 bg-white p-3 sm:p-4 rounded border">
+            <h4 class="font-bold mb-3 text-sm sm:text-base">Diagramm 1: ΔE und ΔN je Punkt über Zeit</h4>
+            <div class="relative" style="height: 300px;">
+                <canvas id="chart-xy-shift"></canvas>
+            </div>
         </div>
         
         <!-- Chart 2: 2D Position shift over time -->
-        <div class="mb-8 bg-white p-4 rounded border">
-            <h4 class="font-bold mb-3">Diagramm 2: 2D Lageverschiebung je Punkt über Zeit</h4>
-            <canvas id="chart-2d-shift" height="80"></canvas>
+        <div class="mb-6 sm:mb-8 bg-white p-3 sm:p-4 rounded border">
+            <h4 class="font-bold mb-3 text-sm sm:text-base">Diagramm 2: 2D Lageverschiebung je Punkt über Zeit</h4>
+            <div class="relative" style="height: 300px;">
+                <canvas id="chart-2d-shift"></canvas>
+            </div>
         </div>
         
         <!-- Chart 3: ΔH over time -->
-        <div class="mb-8 bg-white p-4 rounded border">
-            <h4 class="font-bold mb-3">Diagramm 3: ΔH je Punkt über Zeit</h4>
-            <canvas id="chart-h-shift" height="80"></canvas>
+        <div class="mb-6 sm:mb-8 bg-white p-3 sm:p-4 rounded border">
+            <h4 class="font-bold mb-3 text-sm sm:text-base">Diagramm 3: ΔH je Punkt über Zeit</h4>
+            <div class="relative" style="height: 300px;">
+                <canvas id="chart-h-shift"></canvas>
+            </div>
         </div>
         
         <!-- Chart 4: Vector plot -->
-        <div class="mb-8 bg-white p-4 rounded border">
-            <h4 class="font-bold mb-3">Diagramm 4: Verschiebung als Vektoren (XY)</h4>
-            <canvas id="chart-xy-vector" height="100"></canvas>
+        <div class="mb-6 sm:mb-8 bg-white p-3 sm:p-4 rounded border">
+            <h4 class="font-bold mb-3 text-sm sm:text-base">Diagramm 4: Verschiebung als Vektoren (XY)</h4>
+            <div class="relative" style="height: 400px;">
+                <canvas id="chart-xy-vector"></canvas>
+            </div>
         </div>
 
         <script>
@@ -127,7 +135,7 @@
                 data: { datasets: datasets1 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     scales: {
                         x: { type: 'time', time: { unit: 'day' }, title: { display: true, text: 'Datum' } },
                         y: { title: { display: true, text: 'Abweichung (mm)' } }
@@ -152,7 +160,7 @@
                 data: { datasets: datasets2 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     scales: {
                         x: { type: 'time', time: { unit: 'day' }, title: { display: true, text: 'Datum' } },
                         y: { title: { display: true, text: '2D Verschiebung (mm)' }, beginAtZero: true }
@@ -177,7 +185,7 @@
                 data: { datasets: datasets3 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     scales: {
                         x: { type: 'time', time: { unit: 'day' }, title: { display: true, text: 'Datum' } },
                         y: { title: { display: true, text: 'Höhenabweichung (mm)' } }
@@ -226,8 +234,7 @@
                 data: { datasets: vectorDatasets },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
-                    aspectRatio: 1,
+                    maintainAspectRatio: false,
                     scales: {
                         x: { 
                             title: { display: true, text: 'ΔE (mm)' },

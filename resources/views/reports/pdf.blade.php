@@ -111,7 +111,7 @@
         <div style="margin: 20px 0;">
             <h3>Diagramm 1: ΔE und ΔN je Punkt über Zeit</h3>
             @if($chartImages['xyShift'])
-                <img src="{{ $chartImages['xyShift'] }}" alt="ΔE und ΔN Diagramm" style="width: 100%; max-width: 600px;" onerror="this.style.display='none';" />
+                <img src="{{ $chartImages['xyShift'] }}" alt="ΔE und ΔN Diagramm" style="width: 100%; max-width: 600px;" />
             @endif
             <div style="font-size: 9pt; margin-top: 10px;">
                 <strong>Datenübersicht:</strong>
@@ -129,7 +129,7 @@
         <div style="margin: 20px 0;">
             <h3>Diagramm 2: 2D Lageverschiebung je Punkt über Zeit</h3>
             @if($chartImages['twoDShift'])
-                <img src="{{ $chartImages['twoDShift'] }}" alt="2D Lageverschiebung Diagramm" style="width: 100%; max-width: 600px;" onerror="this.style.display='none';" />
+                <img src="{{ $chartImages['twoDShift'] }}" alt="2D Lageverschiebung Diagramm" style="width: 100%; max-width: 600px;" />
             @endif
             <div style="font-size: 9pt; margin-top: 10px;">
                 <strong>Datenübersicht:</strong>
@@ -147,7 +147,7 @@
         <div style="margin: 20px 0;">
             <h3>Diagramm 3: ΔH je Punkt über Zeit</h3>
             @if($chartImages['hShift'])
-                <img src="{{ $chartImages['hShift'] }}" alt="ΔH Diagramm" style="width: 100%; max-width: 600px;" onerror="this.style.display='none';" />
+                <img src="{{ $chartImages['hShift'] }}" alt="ΔH Diagramm" style="width: 100%; max-width: 600px;" />
             @endif
             <div style="font-size: 9pt; margin-top: 10px;">
                 <strong>Datenübersicht:</strong>
@@ -163,7 +163,7 @@
         <div style="margin: 20px 0;">
             <h3>Diagramm 4: Verschiebung als Vektoren (XY)</h3>
             @if($chartImages['xyVector'])
-                <img src="{{ $chartImages['xyVector'] }}" alt="Vektorverschiebung Diagramm" style="width: 100%; max-width: 600px;" onerror="this.style.display='none';" />
+                <img src="{{ $chartImages['xyVector'] }}" alt="Vektorverschiebung Diagramm" style="width: 100%; max-width: 600px;" />
             @endif
             <div style="font-size: 9pt; margin-top: 10px;">
                 <strong>Datenübersicht:</strong>

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         map = L.map('map').setView([SWITZERLAND_CENTER_LAT, SWITZERLAND_CENTER_LNG], DEFAULT_ZOOM);
 
         // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19
         }).addTo(map);

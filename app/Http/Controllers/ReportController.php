@@ -103,6 +103,12 @@ class ReportController extends Controller
             ];
         }
         
+        // Calculate the maximum number of data points across all survey points
+        $maxDataPoints = 0;
+        foreach ($chartData as $point) {
+            $maxDataPoints = max($maxDataPoints, count($point['dates']));
+        }
+        
         $colors = [
             'rgb(255, 99, 132)',
             'rgb(54, 162, 235)',
@@ -206,7 +212,7 @@ class ReportController extends Controller
                     ],
                     'plugins' => ['title' => ['display' => true, 'text' => 'ΔE und ΔN je Punkt über Zeit']],
                 ],
-            ]),
+            ], false, $maxDataPoints),
             'twoDShift' => $this->getQuickChartUrl([
                 'type' => 'line',
                 'data' => ['datasets' => $datasets2],
@@ -217,7 +223,7 @@ class ReportController extends Controller
                     ],
                     'plugins' => ['title' => ['display' => true, 'text' => '2D Lageverschiebung je Punkt über Zeit']],
                 ],
-            ]),
+            ], false, $maxDataPoints),
             'hShift' => $this->getQuickChartUrl([
                 'type' => 'line',
                 'data' => ['datasets' => $datasets3],
@@ -228,7 +234,7 @@ class ReportController extends Controller
                     ],
                     'plugins' => ['title' => ['display' => true, 'text' => 'ΔH je Punkt über Zeit']],
                 ],
-            ]),
+            ], false, $maxDataPoints),
             'xyVector' => $this->getQuickChartUrl([
                 'type' => 'scatter',
                 'data' => ['datasets' => $datasets4],
@@ -241,15 +247,25 @@ class ReportController extends Controller
                     ],
                     'plugins' => ['title' => ['display' => true, 'text' => 'Verschiebung als Vektoren (XY)']],
                 ],
-            ], true),
+            ], true, $maxDataPoints),
         ];
     }
     
-    private function getQuickChartUrl($chartConfig, $square = false)
+    private function getQuickChartUrl($chartConfig, $square = false, $dataPoints = 0)
     {
         $baseUrl = 'https://quickchart.io/chart';
-        $width = 600;
-        $height = $square ? 600 : 300;
+        
+        // Calculate optimal width based on number of data points
+        // Minimum 600px, add 60px per data point beyond 5 to ensure visibility
+        // Cap at 2000px to keep it reasonable for PDF rendering
+        $baseWidth = 600;
+        if ($dataPoints > 5) {
+            $additionalWidth = ($dataPoints - 5) * 60;
+            $baseWidth = min(2000, $baseWidth + $additionalWidth);
+        }
+        
+        $width = $baseWidth;
+        $height = $square ? $baseWidth : 300;
         
         $params = [
             'width' => $width,

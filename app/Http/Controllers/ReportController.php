@@ -36,6 +36,13 @@ class ReportController extends Controller
                 'dH' => [],
             ];
             
+            // Add null measurement as the first data point (0 deviation)
+            $pointData['dates'][] = $nullMeasurement->date->format('Y-m-d');
+            $pointData['dE'][] = 0.0;
+            $pointData['dN'][] = 0.0;
+            $pointData['dL'][] = 0.0;
+            $pointData['dH'][] = 0.0;
+            
             foreach ($sortedMeasurements as $measurement) {
                 $dE = ($measurement->E - $nullMeasurement->E) * 1000;
                 $dN = ($measurement->N - $nullMeasurement->N) * 1000;

@@ -16,7 +16,7 @@ class ReportController extends Controller
     {
         $project->load('nullMeasurements', 'controlMeasurements');
         
-        $controlByPoint = $project->controlMeasurements->groupBy('punkt')->sortKeys();
+        $controlByPoint = $project->controlMeasurements->sortKeys();
         $nullByPoint = $project->nullMeasurements->keyBy('punkt');
         
         $chartData = [];
@@ -43,6 +43,8 @@ class ReportController extends Controller
             $pointData['dL'][] = round(0, 2);
             $pointData['dH'][] = round(0, 2);
             
+            // Add ALL control measurements for this point (not just the first one)
+            // This ensures all measurements are displayed in diagrams 1-3
             foreach ($sortedMeasurements as $measurement) {
                 $dE = ($measurement->E - $nullMeasurement->E) * 1000;
                 $dN = ($measurement->N - $nullMeasurement->N) * 1000;

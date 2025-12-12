@@ -35,8 +35,10 @@
         <!-- Chart 4: Vector plot -->
         <div class="mb-6 sm:mb-8 bg-white p-3 sm:p-4 rounded border">
             <h4 class="font-bold mb-3 text-sm sm:text-base">Diagramm 4: Verschiebung als Vektoren (XY)</h4>
-            <div class="relative" style="height: 400px; width: 400px; max-width: 100%; margin: 0 auto;">
-                <canvas id="chart-xy-vector"></canvas>
+            <div class="relative" style="width: 100%; max-width: 600px; margin: 0 auto;">
+                <div style="position: relative; width: 100%; padding-bottom: 100%;">
+                    <canvas id="chart-xy-vector" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                </div>
             </div>
         </div>
 

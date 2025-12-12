@@ -34,6 +34,9 @@
                 <button onclick="showTab('diagrams')" id="tab-diagrams" class="tab-button border-b-2 border-transparent py-3 sm:py-4 px-1 font-medium text-sm sm:text-base text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">
                     Diagramme
                 </button>
+                <button onclick="showTab('map')" id="tab-map" class="tab-button border-b-2 border-transparent py-3 sm:py-4 px-1 font-medium text-sm sm:text-base text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap">
+                    Karte
+                </button>
             </nav>
         </div>
     </div>
@@ -141,6 +144,10 @@
 
     <div id="content-diagrams" class="tab-content hidden">
         @include('projects.partials.diagrams')
+    </div>
+
+    <div id="content-map" class="tab-content hidden">
+        @include('projects.partials.map')
     </div>
 </div>
 

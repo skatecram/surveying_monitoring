@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Helpers\CoordinateConverter;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -87,5 +88,26 @@ class ProjectController extends Controller
 
         return redirect()->route('projects.index')
             ->with('success', 'Projekt erfolgreich gelöscht!');
+    }
+
+    /**
+     * Get null measurements with converted WGS84 coordinates for map display
+     */
+    public function mapData(Project $project)
+    {
+        $measurements = $project->nullMeasurements->map(function ($measurement) {
+            $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
+            return [
+                'punkt' => $measurement->punkt,
+                'lat' => $coords['lat'],
+                'lng' => $coords['lng'],
+                'E' => $measurement->E,
+                'N' => $measurement->N,
+                'H' => $measurement->H,
+                'date' => $measurement->date->format('d.m.Y'),
+            ];
+        });
+
+        return response()->json($measurements);
     }
 }

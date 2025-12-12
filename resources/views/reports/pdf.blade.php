@@ -86,22 +86,59 @@
             <div class="info"><strong>Bearbeiter:</strong> {{ $project->bearbeiter }}</div>
             <div class="info"><strong>Datum:</strong> {{ date('d.m.Y') }}</div>
         </div>
+        
+        <!-- QR Code for online view -->
+        <div style="margin-top: 60px; text-align: center;">
+            <p style="font-size: 11pt; margin-bottom: 10px;"><strong>Online-Ansicht:</strong></p>
+            <img src="{{ $qrCodeDataUri }}" alt="QR Code" style="width: 150px; height: 150px;" />
+            <p style="font-size: 9pt; color: #666; margin-top: 5px;">
+                Scannen Sie den QR-Code für die Online-Ansicht<br>
+                oder besuchen Sie: <span style="font-size: 8pt;">{{ $projectUrl }}</span>
+            </p>
+        </div>
     </div>
 
-    <!-- Charts Note -->
+    <!-- Charts -->
     <h2>Diagramme</h2>
-    <p class="chart-note">
-        Hinweis: Diagramme werden in der Web-Ansicht angezeigt. 
-        Für detaillierte Visualisierungen verwenden Sie bitte die Diagramm-Ansicht in der Anwendung.
-    </p>
     
-    @if(count($chartData) > 0)
-        <p>Übersicht der erfassten Messpunkte:</p>
-        <ul>
-            @foreach($chartData as $point)
-                <li>Punkt {{ $point['punkt'] }}: {{ count($point['dates']) }} Messungen</li>
-            @endforeach
-        </ul>
+    @if(count($chartData) > 0 && isset($chartImages))
+        <!-- Chart 1: ΔE and ΔN -->
+        <div style="margin: 20px 0;">
+            <h3>Diagramm 1: ΔE und ΔN je Punkt über Zeit</h3>
+            @if($chartImages['xyShift'])
+                <img src="{{ $chartImages['xyShift'] }}" alt="ΔE und ΔN Diagramm" style="width: 100%; max-width: 600px;" />
+            @endif
+        </div>
+        
+        <!-- Chart 2: 2D Position shift -->
+        <div style="margin: 20px 0;">
+            <h3>Diagramm 2: 2D Lageverschiebung je Punkt über Zeit</h3>
+            @if($chartImages['twoDShift'])
+                <img src="{{ $chartImages['twoDShift'] }}" alt="2D Lageverschiebung Diagramm" style="width: 100%; max-width: 600px;" />
+            @endif
+        </div>
+        
+        <div class="page-break"></div>
+        
+        <!-- Chart 3: ΔH -->
+        <div style="margin: 20px 0;">
+            <h3>Diagramm 3: ΔH je Punkt über Zeit</h3>
+            @if($chartImages['hShift'])
+                <img src="{{ $chartImages['hShift'] }}" alt="ΔH Diagramm" style="width: 100%; max-width: 600px;" />
+            @endif
+        </div>
+        
+        <!-- Chart 4: Vector plot -->
+        <div style="margin: 20px 0;">
+            <h3>Diagramm 4: Verschiebung als Vektoren (XY)</h3>
+            @if($chartImages['xyVector'])
+                <img src="{{ $chartImages['xyVector'] }}" alt="Vektorverschiebung Diagramm" style="width: 100%; max-width: 600px;" />
+            @endif
+        </div>
+    @else
+        <p class="chart-note">
+            Keine Daten für Diagramme verfügbar. Bitte importieren Sie zunächst Null- und Kontrollmessungen.
+        </p>
     @endif
 
     <!-- Deviation Tables -->

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            attribution: '<a href="https://www.geo.admin.ch/en/general-terms-of-use-fsdi">geo.admin.ch</a>',
             maxZoom: 19
         }).addTo(map);
 

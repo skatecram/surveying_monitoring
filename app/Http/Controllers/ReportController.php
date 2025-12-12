@@ -264,7 +264,7 @@ class ReportController extends Controller
             $baseWidth = min(2000, $baseWidth + $additionalWidth);
         }
         
-        $width = $square ? $baseWidth : $baseWidth;
+        $width = $baseWidth;
         $height = $square ? $baseWidth : 300;
         
         $params = [

@@ -16,7 +16,7 @@ class ReportController extends Controller
     {
         $project->load('nullMeasurements', 'controlMeasurements');
         
-        $controlByPoint = $project->controlMeasurements->groupBy('punkt')->sortKeys();
+        $controlByPoint = $project->controlMeasurements->sortKeys();
         $nullByPoint = $project->nullMeasurements->keyBy('punkt');
         
         $chartData = [];

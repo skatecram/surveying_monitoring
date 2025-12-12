@@ -35,7 +35,7 @@
         <!-- Chart 4: Vector plot -->
         <div class="mb-6 sm:mb-8 bg-white p-3 sm:p-4 rounded border">
             <h4 class="font-bold mb-3 text-sm sm:text-base">Diagramm 4: Verschiebung als Vektoren (XY)</h4>
-            <div class="relative" style="height: 400px;">
+            <div class="relative" style="height: 400px; width: 400px; max-width: 100%; margin: 0 auto;">
                 <canvas id="chart-xy-vector"></canvas>
             </div>
         </div>
@@ -213,6 +213,7 @@
                     pointRadius: 6,
                     pointHoverRadius: 8,
                     showLine: true,
+                    fill: false,
                     tension: 0.1,
                 });
             });
@@ -234,7 +235,8 @@
                 data: { datasets: vectorDatasets },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1,
                     scales: {
                         x: { 
                             title: { display: true, text: 'ΔE (mm)' },

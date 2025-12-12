@@ -5,7 +5,7 @@
     <title>Überwachungsmessungs-Bericht</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: DejaVu Sans, sans-serif;
             font-size: 10pt;
         }
         h1 {

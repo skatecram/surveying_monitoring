@@ -157,6 +157,7 @@ class ReportController extends Controller
                 'borderColor' => $colors[$index % count($colors)],
                 'backgroundColor' => $colors[$index % count($colors)],
                 'showLine' => true,
+                'fill' => false,
             ];
         }
         
@@ -214,15 +215,15 @@ class ReportController extends Controller
                     ],
                     'plugins' => ['title' => ['display' => true, 'text' => 'Verschiebung als Vektoren (XY)']],
                 ],
-            ]),
+            ], true),
         ];
     }
     
-    private function getQuickChartUrl($chartConfig)
+    private function getQuickChartUrl($chartConfig, $square = false)
     {
         $baseUrl = 'https://quickchart.io/chart';
         $width = 600;
-        $height = 300;
+        $height = $square ? 600 : 300;
         
         $params = [
             'width' => $width,

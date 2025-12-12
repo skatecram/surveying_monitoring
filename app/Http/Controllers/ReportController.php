@@ -216,6 +216,8 @@ class ReportController extends Controller
                 'type' => 'scatter',
                 'data' => ['datasets' => $datasets4],
                 'options' => [
+                    'maintainAspectRatio' => true,
+                    'aspectRatio' => 1,
                     'scales' => [
                         'x' => ['title' => ['display' => true, 'text' => 'ΔE (mm)'], 'min' => -$axisRange, 'max' => $axisRange],
                         'y' => ['title' => ['display' => true, 'text' => 'ΔN (mm)'], 'min' => -$axisRange, 'max' => $axisRange],

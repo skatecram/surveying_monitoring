@@ -11,6 +11,9 @@ Route::get('/', function () {
 
 Route::resource('projects', ProjectController::class);
 
+Route::get('projects/{project}/map-data', [ProjectController::class, 'mapData'])
+    ->name('projects.map-data');
+
 Route::post('projects/{project}/measurements/import-null', [MeasurementController::class, 'importNull'])
     ->name('measurements.import-null');
 

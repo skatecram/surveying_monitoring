@@ -163,8 +163,11 @@ class ReportController extends Controller
                 'data' => $displacementPoints,
                 'borderColor' => $colors[$index % count($colors)],
                 'backgroundColor' => $colors[$index % count($colors)],
+                'pointRadius' => 6,
+                'pointHoverRadius' => 8,
                 'showLine' => true,
                 'fill' => false,
+                'tension' => 0.1,
             ];
         }
         

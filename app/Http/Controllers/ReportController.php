@@ -121,14 +121,20 @@ class ReportController extends Controller
                 'label' => $point['punkt'] . ' (ΔE)',
                 'data' => array_map(fn($i) => ['x' => $point['dates'][$i], 'y' => $point['dE'][$i]], array_keys($point['dates'])),
                 'borderColor' => $colors[$index % count($colors)],
+                'backgroundColor' => $colors[$index % count($colors)],
                 'borderDash' => [5, 5],
                 'fill' => false,
+                'pointRadius' => 4,
+                'pointHoverRadius' => 6,
             ];
             $datasets1[] = [
                 'label' => $point['punkt'] . ' (ΔN)',
                 'data' => array_map(fn($i) => ['x' => $point['dates'][$i], 'y' => $point['dN'][$i]], array_keys($point['dates'])),
                 'borderColor' => $colors[$index % count($colors)],
+                'backgroundColor' => $colors[$index % count($colors)],
                 'fill' => false,
+                'pointRadius' => 4,
+                'pointHoverRadius' => 6,
             ];
         }
         
@@ -139,7 +145,10 @@ class ReportController extends Controller
                 'label' => $point['punkt'] . ' (ΔL)',
                 'data' => array_map(fn($i) => ['x' => $point['dates'][$i], 'y' => $point['dL'][$i]], array_keys($point['dates'])),
                 'borderColor' => $colors[$index % count($colors)],
+                'backgroundColor' => $colors[$index % count($colors)],
                 'fill' => false,
+                'pointRadius' => 4,
+                'pointHoverRadius' => 6,
             ];
         }
         
@@ -150,7 +159,10 @@ class ReportController extends Controller
                 'label' => $point['punkt'] . ' (ΔH)',
                 'data' => array_map(fn($i) => ['x' => $point['dates'][$i], 'y' => $point['dH'][$i]], array_keys($point['dates'])),
                 'borderColor' => $colors[$index % count($colors)],
+                'backgroundColor' => $colors[$index % count($colors)],
                 'fill' => false,
+                'pointRadius' => 4,
+                'pointHoverRadius' => 6,
             ];
         }
         

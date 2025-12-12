@@ -5,6 +5,12 @@ namespace App\Helpers;
 class CoordinateConverter
 {
     /**
+     * Conversion factor from projection units to degrees
+     * Based on swisstopo conversion formulas
+     */
+    private const DEGREES_CONVERSION_FACTOR = 100 / 36;
+
+    /**
      * Convert Swiss LV95 coordinates (E, N) to WGS84 (latitude, longitude)
      * 
      * Based on the approximate formulas from swisstopo
@@ -36,8 +42,8 @@ class CoordinateConverter
             - 0.0140 * pow($x, 3);
 
         // Convert to degrees
-        $longitude = $lambda * 100 / 36;
-        $latitude = $phi * 100 / 36;
+        $longitude = $lambda * self::DEGREES_CONVERSION_FACTOR;
+        $latitude = $phi * self::DEGREES_CONVERSION_FACTOR;
 
         return [
             'lat' => $latitude,

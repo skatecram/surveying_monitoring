@@ -16,15 +16,14 @@
 </div>
 
 @if($project->nullMeasurements->count() > 0)
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Configuration constants
+    const SWITZERLAND_CENTER_LAT = 46.8182;
+    const SWITZERLAND_CENTER_LNG = 8.2275;
+    const DEFAULT_ZOOM = 8;
+    const MAP_INIT_DELAY = 100; // Delay in milliseconds to ensure container is visible
+    
     // Initialize the map only when the map tab is shown
     let mapInitialized = false;
     let map = null;
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mapInitialized) return;
         
         // Create the map centered on Switzerland
-        map = L.map('map').setView([46.8182, 8.2275], 8);
+        map = L.map('map').setView([SWITZERLAND_CENTER_LAT, SWITZERLAND_CENTER_LNG], DEFAULT_ZOOM);
 
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -89,8 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
         window.showTab = function(tabName) {
             originalShowTab(tabName);
             if (tabName === 'map') {
-                // Small delay to ensure the map container is visible
-                setTimeout(initializeMap, 100);
+                // Delay to ensure the map container is visible
+                setTimeout(initializeMap, MAP_INIT_DELAY);
             }
         };
     }

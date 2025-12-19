@@ -80,19 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
         mapInitialized = true;
     }
 
-    // Check if map tab is active on page load
-    const mapTab = document.getElementById('tab-map');
-    if (mapTab) {
-        // Listen for tab changes
-        const originalShowTab = window.showTab;
-        window.showTab = function(tabName) {
-            originalShowTab(tabName);
-            if (tabName === 'map') {
-                // Delay to ensure the map container is visible
-                setTimeout(initializeMap, MAP_INIT_DELAY);
-            }
-        };
-    }
+    // Initialize map on load since this is a Livewire component
+    setTimeout(initializeMap, MAP_INIT_DELAY);
 });
 </script>
 @endif

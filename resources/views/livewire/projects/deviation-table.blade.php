@@ -26,7 +26,7 @@
         
         // Helper function for threshold class
         $getThresholdClass = function($value, $warning, $caution, $alarm) {
-            $abs = \abs($value);
+            $abs = abs($value);
             if ($abs >= $alarm) return 'threshold-alarm';
             if ($abs >= $caution) return 'threshold-caution';
             if ($abs >= $warning) return 'threshold-warning';
@@ -74,7 +74,7 @@
                                     // Calculate deviations from null measurement
                                     $dE_null = ($measurement->E - $nullMeasurement->E) * 1000;
                                     $dN_null = ($measurement->N - $nullMeasurement->N) * 1000;
-                                    $dL_null = \sqrt(\pow($dE_null, 2) + \pow($dN_null, 2));
+                                    $dL_null = sqrt(pow($dE_null, 2) + pow($dN_null, 2));
                                     $dH_null = ($measurement->H - $nullMeasurement->H) * 1000;
                                 @endphp
                                 
@@ -101,7 +101,7 @@
                                         // Calculate deviations from previous measurement
                                         $dE_prev = ($measurement->E - $prevMeasurement->E) * 1000;
                                         $dN_prev = ($measurement->N - $prevMeasurement->N) * 1000;
-                                        $dL_prev = \sqrt(\pow($dE_prev, 2) + \pow($dN_prev, 2));
+                                        $dL_prev = sqrt(pow($dE_prev, 2) + pow($dN_prev, 2));
                                         $dH_prev = ($measurement->H - $prevMeasurement->H) * 1000;
                                     @endphp
                                     

@@ -46,26 +46,26 @@
                     <h4 class="text-base sm:text-lg font-bold mb-3">Punkt: {{ $punkt }}</h4>
                     
                     <div class="overflow-x-auto">
-                        <table class="w-full text-xs sm:text-sm min-w-[600px]">
-                            <thead class="bg-blue-900 text-white">
-                                <tr>
-                                    <th class="px-2 sm:px-3 py-2">Vergleich</th>
-                                    <th class="px-2 sm:px-3 py-2">Kontrolldatum</th>
-                                    <th class="px-2 sm:px-3 py-2">ΔE (mm)</th>
-                                    <th class="px-2 sm:px-3 py-2">ΔN (mm)</th>
-                                    <th class="px-2 sm:px-3 py-2">ΔL (mm)</th>
-                                    <th class="px-2 sm:px-3 py-2">ΔH (mm)</th>
+                        <table class="w-full text-xs sm:text-sm min-w-[600px] border-collapse">
+                            <thead>
+                                <tr class="border-b border-zinc-200 dark:border-zinc-700">
+                                    <th class="px-2 sm:px-3 py-3 text-left font-semibold text-zinc-900 dark:text-white">Vergleich</th>
+                                    <th class="px-2 sm:px-3 py-3 text-left font-semibold text-zinc-900 dark:text-white">Kontrolldatum</th>
+                                    <th class="px-2 sm:px-3 py-3 text-left font-semibold text-zinc-900 dark:text-white">ΔE (mm)</th>
+                                    <th class="px-2 sm:px-3 py-3 text-left font-semibold text-zinc-900 dark:text-white">ΔN (mm)</th>
+                                    <th class="px-2 sm:px-3 py-3 text-left font-semibold text-zinc-900 dark:text-white">ΔL (mm)</th>
+                                    <th class="px-2 sm:px-3 py-3 text-left font-semibold text-zinc-900 dark:text-white">ΔH (mm)</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
                                 <!-- Nullmessung row (baseline with 0 deviations) -->
-                                <tr class="border-b bg-blue-50">
-                                    <td class="px-2 sm:px-3 py-2 font-bold">Nullmessung</td>
-                                    <td class="px-2 sm:px-3 py-2 whitespace-nowrap">{{ $nullMeasurement->date->format('d.m.Y') }}</td>
-                                    <td class="px-2 sm:px-3 py-2">{{ number_format(0, 2) }}</td>
-                                    <td class="px-2 sm:px-3 py-2">{{ number_format(0, 2) }}</td>
-                                    <td class="px-2 sm:px-3 py-2">{{ number_format(0, 2) }}</td>
-                                    <td class="px-2 sm:px-3 py-2">{{ number_format(0, 2) }}</td>
+                                <tr class="bg-blue-50 dark:bg-blue-900/20">
+                                    <td class="px-2 sm:px-3 py-2 font-bold text-zinc-900 dark:text-zinc-100">Nullmessung</td>
+                                    <td class="px-2 sm:px-3 py-2 whitespace-nowrap text-zinc-900 dark:text-zinc-100">{{ $nullMeasurement->date->format('d.m.Y') }}</td>
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100">{{ number_format(0, 2) }}</td>
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100">{{ number_format(0, 2) }}</td>
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100">{{ number_format(0, 2) }}</td>
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100">{{ number_format(0, 2) }}</td>
                                 </tr>
                             
                             @php $prevMeasurement = null; @endphp
@@ -79,19 +79,19 @@
                                 @endphp
                                 
                                 <!-- Null measurement comparison -->
-                                <tr class="border-b">
-                                    <td class="px-2 sm:px-3 py-2">Nullmessung</td>
-                                    <td class="px-2 sm:px-3 py-2 whitespace-nowrap">{{ $measurement->date->format('d.m.Y') }}</td>
-                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dE_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100">Nullmessung</td>
+                                    <td class="px-2 sm:px-3 py-2 whitespace-nowrap text-zinc-900 dark:text-zinc-100">{{ $measurement->date->format('d.m.Y') }}</td>
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dE_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dE_null, 2) }}
                                     </td>
-                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dN_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dN_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dN_null, 2) }}
                                     </td>
-                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dL_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dL_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dL_null, 2) }}
                                     </td>
-                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dH_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dH_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dH_null, 2) }}
                                     </td>
                                 </tr>
@@ -106,18 +106,18 @@
                                     @endphp
                                     
                                     <!-- Previous measurement comparison -->
-                                    <tr class="border-b">
-                                        <td class="px-2 sm:px-3 py-2">Vormessung</td>
-                                        <td class="px-2 sm:px-3 py-2 whitespace-nowrap">{{ $measurement->date->format('d.m.Y') }}</td>
-                                        <td class="px-2 sm:px-3 py-2">{{ number_format($dE_prev, 2) }}</td>
-                                        <td class="px-2 sm:px-3 py-2">{{ number_format($dN_prev, 2) }}</td>
-                                        <td class="px-2 sm:px-3 py-2">{{ number_format($dL_prev, 2) }}</td>
-                                        <td class="px-2 sm:px-3 py-2">{{ number_format($dH_prev, 2) }}</td>
+                                    <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                                        <td class="px-2 sm:px-3 py-2 text-zinc-600 dark:text-zinc-400">Vormessung</td>
+                                        <td class="px-2 sm:px-3 py-2 whitespace-nowrap text-zinc-600 dark:text-zinc-400">{{ $measurement->date->format('d.m.Y') }}</td>
+                                        <td class="px-2 sm:px-3 py-2 text-zinc-600 dark:text-zinc-400">{{ number_format($dE_prev, 2) }}</td>
+                                        <td class="px-2 sm:px-3 py-2 text-zinc-600 dark:text-zinc-400">{{ number_format($dN_prev, 2) }}</td>
+                                        <td class="px-2 sm:px-3 py-2 text-zinc-600 dark:text-zinc-400">{{ number_format($dL_prev, 2) }}</td>
+                                        <td class="px-2 sm:px-3 py-2 text-zinc-600 dark:text-zinc-400">{{ number_format($dH_prev, 2) }}</td>
                                     </tr>
                                 @endif
                                 
                                 <!-- Separator row -->
-                                <tr class="border-b bg-gray-200">
+                                <tr class="bg-zinc-100 dark:bg-zinc-800">
                                     <td colspan="6" class="px-2 sm:px-3 py-1"></td>
                                 </tr>
                                 

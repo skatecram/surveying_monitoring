@@ -18,24 +18,24 @@
             <div class="mt-4">
                 <flux:subheading class="mb-2">Aktuelle Nullmessungen ({{ $project->nullMeasurements->count() }} Punkte):</flux:subheading>
                 <div class="max-h-64 overflow-y-auto overflow-x-auto">
-                    <table class="w-full text-xs sm:text-sm min-w-[400px]">
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th class="px-1 sm:px-2 py-1">Punkt</th>
-                                <th class="px-1 sm:px-2 py-1">E</th>
-                                <th class="px-1 sm:px-2 py-1">N</th>
-                                <th class="px-1 sm:px-2 py-1">H</th>
-                                <th class="px-1 sm:px-2 py-1">Datum</th>
+                    <table class="w-full text-xs sm:text-sm min-w-[400px] border-collapse">
+                        <thead>
+                            <tr class="border-b border-zinc-200 dark:border-zinc-700">
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">Punkt</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">E</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">N</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">H</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">Datum</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
                             @foreach($project->nullMeasurements as $measurement)
-                            <tr class="border-b">
-                                <td class="px-1 sm:px-2 py-1">{{ $measurement->punkt }}</td>
-                                <td class="px-1 sm:px-2 py-1">{{ number_format($measurement->E, 3) }}</td>
-                                <td class="px-1 sm:px-2 py-1">{{ number_format($measurement->N, 3) }}</td>
-                                <td class="px-1 sm:px-2 py-1">{{ number_format($measurement->H, 3) }}</td>
-                                <td class="px-1 sm:px-2 py-1 whitespace-nowrap">{{ $measurement->date->format('d.m.Y') }}</td>
+                            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                                <td class="px-1 sm:px-2 py-1 text-zinc-900 dark:text-zinc-100">{{ $measurement->punkt }}</td>
+                                <td class="px-1 sm:px-2 py-1 text-zinc-600 dark:text-zinc-400">{{ number_format($measurement->E, 3) }}</td>
+                                <td class="px-1 sm:px-2 py-1 text-zinc-600 dark:text-zinc-400">{{ number_format($measurement->N, 3) }}</td>
+                                <td class="px-1 sm:px-2 py-1 text-zinc-600 dark:text-zinc-400">{{ number_format($measurement->H, 3) }}</td>
+                                <td class="px-1 sm:px-2 py-1 whitespace-nowrap text-zinc-600 dark:text-zinc-400">{{ $measurement->date->format('d.m.Y') }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -64,24 +64,24 @@
             <div class="mt-4">
                 <flux:subheading class="mb-2">Aktuelle Kontrollmessungen ({{ $project->controlMeasurements->count() }} Messungen):</flux:subheading>
                 <div class="max-h-64 overflow-y-auto overflow-x-auto">
-                    <table class="w-full text-xs sm:text-sm min-w-[400px]">
-                        <thead class="bg-gray-200">
-                            <tr>
-                                <th class="px-1 sm:px-2 py-1">Punkt</th>
-                                <th class="px-1 sm:px-2 py-1">E</th>
-                                <th class="px-1 sm:px-2 py-1">N</th>
-                                <th class="px-1 sm:px-2 py-1">H</th>
-                                <th class="px-1 sm:px-2 py-1">Datum</th>
+                    <table class="w-full text-xs sm:text-sm min-w-[400px] border-collapse">
+                        <thead>
+                            <tr class="border-b border-zinc-200 dark:border-zinc-700">
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">Punkt</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">E</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">N</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">H</th>
+                                <th class="px-1 sm:px-2 py-2 text-left font-semibold text-zinc-900 dark:text-white">Datum</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
                             @foreach($project->controlMeasurements->sortBy('date') as $measurement)
-                            <tr class="border-b">
-                                <td class="px-1 sm:px-2 py-1">{{ $measurement->punkt }}</td>
-                                <td class="px-1 sm:px-2 py-1">{{ number_format($measurement->E, 3) }}</td>
-                                <td class="px-1 sm:px-2 py-1">{{ number_format($measurement->N, 3) }}</td>
-                                <td class="px-1 sm:px-2 py-1">{{ number_format($measurement->H, 3) }}</td>
-                                <td class="px-1 sm:px-2 py-1 whitespace-nowrap">{{ $measurement->date->format('d.m.Y') }}</td>
+                            <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
+                                <td class="px-1 sm:px-2 py-1 text-zinc-900 dark:text-zinc-100">{{ $measurement->punkt }}</td>
+                                <td class="px-1 sm:px-2 py-1 text-zinc-600 dark:text-zinc-400">{{ number_format($measurement->E, 3) }}</td>
+                                <td class="px-1 sm:px-2 py-1 text-zinc-600 dark:text-zinc-400">{{ number_format($measurement->N, 3) }}</td>
+                                <td class="px-1 sm:px-2 py-1 text-zinc-600 dark:text-zinc-400">{{ number_format($measurement->H, 3) }}</td>
+                                <td class="px-1 sm:px-2 py-1 whitespace-nowrap text-zinc-600 dark:text-zinc-400">{{ $measurement->date->format('d.m.Y') }}</td>
                             </tr>
                             @endforeach
                         </tbody>

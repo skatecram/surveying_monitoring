@@ -1,14 +1,14 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
     <!-- Nullmessung -->
     <div class="border rounded-lg p-3 sm:p-4">
-        <h3 class="text-lg sm:text-xl font-bold mb-4">Nullmessung</h3>
-        <form action="{{ route('measurements.import-null', $project) }}" method="POST" enctype="multipart/form-data">
+        <flux:heading size="lg" class="mb-4">Nullmessung</flux:heading>
+        <form action="{{ route('measurements.import-null', $project) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2">CSV-Datei importieren:</label>
-                <input type="file" name="file" accept=".csv,.txt" class="w-full px-3 py-2 border rounded" required>
-                <p class="text-sm text-gray-600 mt-2">Format: Punkt,E,N,H,Datum</p>
-            </div>
+            <flux:field>
+                <flux:label>CSV-Datei importieren:</flux:label>
+                <flux:input.file name="file" accept=".csv,.txt" required />
+                <flux:description>Format: Punkt,E,N,H,Datum</flux:description>
+            </flux:field>
             <flux:button type="submit" variant="primary" class="w-full">
                 Importieren
             </flux:button>
@@ -16,7 +16,7 @@
 
         @if($project->nullMeasurements->count() > 0)
             <div class="mt-4">
-                <h4 class="font-bold mb-2 text-sm sm:text-base">Aktuelle Nullmessungen ({{ $project->nullMeasurements->count() }} Punkte):</h4>
+                <flux:subheading class="mb-2">Aktuelle Nullmessungen ({{ $project->nullMeasurements->count() }} Punkte):</flux:subheading>
                 <div class="max-h-64 overflow-y-auto overflow-x-auto">
                     <table class="w-full text-xs sm:text-sm min-w-[400px]">
                         <thead class="bg-gray-200">
@@ -47,14 +47,14 @@
 
     <!-- Kontrollmessung -->
     <div class="border rounded-lg p-3 sm:p-4">
-        <h3 class="text-lg sm:text-xl font-bold mb-4">Kontrollmessungen</h3>
-        <form action="{{ route('measurements.import-control', $project) }}" method="POST" enctype="multipart/form-data">
+        <flux:heading size="lg" class="mb-4">Kontrollmessungen</flux:heading>
+        <form action="{{ route('measurements.import-control', $project) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
             @csrf
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2">CSV-Datei importieren:</label>
-                <input type="file" name="file" accept=".csv,.txt" class="w-full px-3 py-2 border rounded" required>
-                <p class="text-sm text-gray-600 mt-2">Format: Punkt,E,N,H,Datum</p>
-            </div>
+            <flux:field>
+                <flux:label>CSV-Datei importieren:</flux:label>
+                <flux:input.file name="file" accept=".csv,.txt" required />
+                <flux:description>Format: Punkt,E,N,H,Datum</flux:description>
+            </flux:field>
             <flux:button type="submit" variant="primary" class="w-full">
                 Importieren
             </flux:button>
@@ -62,7 +62,7 @@
 
         @if($project->controlMeasurements->count() > 0)
             <div class="mt-4">
-                <h4 class="font-bold mb-2 text-sm sm:text-base">Aktuelle Kontrollmessungen ({{ $project->controlMeasurements->count() }} Messungen):</h4>
+                <flux:subheading class="mb-2">Aktuelle Kontrollmessungen ({{ $project->controlMeasurements->count() }} Messungen):</flux:subheading>
                 <div class="max-h-64 overflow-y-auto overflow-x-auto">
                     <table class="w-full text-xs sm:text-sm min-w-[400px]">
                         <thead class="bg-gray-200">

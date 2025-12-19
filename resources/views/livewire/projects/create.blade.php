@@ -1,33 +1,24 @@
-<div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
-    <h2 class="text-xl sm:text-2xl font-bold mb-6">Neues Projekt erstellen</h2>
+<flux:container class="max-w-2xl mx-auto">
+    <flux:heading size="xl" class="mb-6">Neues Projekt erstellen</flux:heading>
 
-    <form wire:submit="save">
-        <div class="mb-4">
-            <label for="number" class="block text-gray-700 font-bold mb-2">Auftragsnummer:</label>
-            <input type="text" wire:model="number" id="number" 
-                   class="w-full px-3 py-2 border rounded @error('number') border-red-500 @enderror" required>
-            @error('number')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+    <form wire:submit="save" class="space-y-6">
+        <flux:field>
+            <flux:label>Auftragsnummer:</flux:label>
+            <flux:input wire:model="number" required />
+            <flux:error name="number" />
+        </flux:field>
 
-        <div class="mb-4">
-            <label for="name" class="block text-gray-700 font-bold mb-2">Auftrag (Projektname):</label>
-            <input type="text" wire:model="name" id="name" 
-                   class="w-full px-3 py-2 border rounded @error('name') border-red-500 @enderror" required>
-            @error('name')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Auftrag (Projektname):</flux:label>
+            <flux:input wire:model="name" required />
+            <flux:error name="name" />
+        </flux:field>
 
-        <div class="mb-4">
-            <label for="bearbeiter" class="block text-gray-700 font-bold mb-2">Bearbeiter:</label>
-            <input type="text" wire:model="bearbeiter" id="bearbeiter" 
-                   class="w-full px-3 py-2 border rounded @error('bearbeiter') border-red-500 @enderror" required>
-            @error('bearbeiter')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Bearbeiter:</flux:label>
+            <flux:input wire:model="bearbeiter" required />
+            <flux:error name="bearbeiter" />
+        </flux:field>
 
         <div class="flex flex-col sm:flex-row sm:justify-between gap-2">
             <flux:button href="{{ route('projects.index') }}" variant="ghost">
@@ -38,4 +29,4 @@
             </flux:button>
         </div>
     </form>
-</div>
+</flux:container>

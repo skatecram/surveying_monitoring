@@ -1,6 +1,6 @@
-<div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+<flux:container>
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-        <h2 class="text-xl sm:text-2xl font-bold">Projekte</h2>
+        <flux:heading size="xl">Projekte</flux:heading>
         <flux:button href="{{ route('projects.create') }}" variant="primary">
             Neues Projekt
         </flux:button>
@@ -38,6 +38,6 @@
             </table>
         </div>
     @else
-        <p class="text-gray-600">Keine Projekte vorhanden. Erstellen Sie ein neues Projekt.</p>
+        <flux:text>Keine Projekte vorhanden. Erstellen Sie ein neues Projekt.</flux:text>
     @endif
-</div>
+</flux:container>

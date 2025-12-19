@@ -1,60 +1,42 @@
-<div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
-    <h2 class="text-xl sm:text-2xl font-bold mb-6">Projekt bearbeiten</h2>
+<flux:container class="max-w-2xl mx-auto">
+    <flux:heading size="xl" class="mb-6">Projekt bearbeiten</flux:heading>
 
-    <form wire:submit="save">
-        <div class="mb-4">
-            <label for="number" class="block text-gray-700 font-bold mb-2">Auftragsnummer:</label>
-            <input type="text" wire:model="number" id="number" 
-                   class="w-full px-3 py-2 border rounded @error('number') border-red-500 @enderror" required>
-            @error('number')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+    <form wire:submit="save" class="space-y-6">
+        <flux:field>
+            <flux:label>Auftragsnummer:</flux:label>
+            <flux:input wire:model="number" required />
+            <flux:error name="number" />
+        </flux:field>
 
-        <div class="mb-4">
-            <label for="name" class="block text-gray-700 font-bold mb-2">Auftrag (Projektname):</label>
-            <input type="text" wire:model="name" id="name" 
-                   class="w-full px-3 py-2 border rounded @error('name') border-red-500 @enderror" required>
-            @error('name')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Auftrag (Projektname):</flux:label>
+            <flux:input wire:model="name" required />
+            <flux:error name="name" />
+        </flux:field>
 
-        <div class="mb-4">
-            <label for="bearbeiter" class="block text-gray-700 font-bold mb-2">Bearbeiter:</label>
-            <input type="text" wire:model="bearbeiter" id="bearbeiter" 
-                   class="w-full px-3 py-2 border rounded @error('bearbeiter') border-red-500 @enderror" required>
-            @error('bearbeiter')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Bearbeiter:</flux:label>
+            <flux:input wire:model="bearbeiter" required />
+            <flux:error name="bearbeiter" />
+        </flux:field>
 
-        <div class="mb-4">
-            <label for="threshold_warning" class="block text-gray-700 font-bold mb-2">Aufmerksamkeitswert (mm):</label>
-            <input type="number" step="0.01" wire:model="threshold_warning" id="threshold_warning" 
-                   class="w-full px-3 py-2 border rounded @error('threshold_warning') border-red-500 @enderror" required>
-            @error('threshold_warning')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Aufmerksamkeitswert (mm):</flux:label>
+            <flux:input type="number" step="0.01" wire:model="threshold_warning" required />
+            <flux:error name="threshold_warning" />
+        </flux:field>
 
-        <div class="mb-4">
-            <label for="threshold_caution" class="block text-gray-700 font-bold mb-2">Interventionswert (mm):</label>
-            <input type="number" step="0.01" wire:model="threshold_caution" id="threshold_caution" 
-                   class="w-full px-3 py-2 border rounded @error('threshold_caution') border-red-500 @enderror" required>
-            @error('threshold_caution')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Interventionswert (mm):</flux:label>
+            <flux:input type="number" step="0.01" wire:model="threshold_caution" required />
+            <flux:error name="threshold_caution" />
+        </flux:field>
 
-        <div class="mb-4">
-            <label for="threshold_alarm" class="block text-gray-700 font-bold mb-2">Alarmwert (mm):</label>
-            <input type="number" step="0.01" wire:model="threshold_alarm" id="threshold_alarm" 
-                   class="w-full px-3 py-2 border rounded @error('threshold_alarm') border-red-500 @enderror" required>
-            @error('threshold_alarm')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+        <flux:field>
+            <flux:label>Alarmwert (mm):</flux:label>
+            <flux:input type="number" step="0.01" wire:model="threshold_alarm" required />
+            <flux:error name="threshold_alarm" />
+        </flux:field>
 
         <div class="flex flex-col sm:flex-row sm:justify-between gap-2">
             <flux:button href="{{ route('projects.show', $project) }}" variant="ghost">
@@ -65,4 +47,4 @@
             </flux:button>
         </div>
     </form>
-</div>
+</flux:container>

@@ -15,8 +15,8 @@
         .threshold-alarm { background-color: #FF0000; color: white; }
     </style>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-blue-900 text-white p-4">
+<body class="min-h-screen bg-white dark:bg-zinc-800 antialiased">
+    <nav class="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700 p-4">
         <div class="container mx-auto flex flex-wrap justify-between items-center gap-2">
             <h1 class="text-xl sm:text-2xl font-bold">Überwachungs Programm</h1>
             <div class="space-x-4">

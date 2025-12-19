@@ -82,16 +82,16 @@
                                 <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
                                     <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100">Nullmessung</td>
                                     <td class="px-2 sm:px-3 py-2 whitespace-nowrap text-zinc-900 dark:text-zinc-100">{{ $measurement->date->format('d.m.Y') }}</td>
-                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dE_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dE_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dE_null, 2) }}
                                     </td>
-                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dN_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dN_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dN_null, 2) }}
                                     </td>
-                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dL_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dL_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dL_null, 2) }}
                                     </td>
-                                    <td class="px-2 sm:px-3 py-2 text-zinc-900 dark:text-zinc-100 {{ $getThresholdClass($dH_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
+                                    <td class="px-2 sm:px-3 py-2 {{ $getThresholdClass($dH_null, $project->threshold_warning, $project->threshold_caution, $project->threshold_alarm) }}">
                                         {{ number_format($dH_null, 2) }}
                                     </td>
                                 </tr>

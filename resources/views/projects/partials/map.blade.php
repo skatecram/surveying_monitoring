@@ -1,12 +1,23 @@
 <div class="border rounded-lg p-4">
-    <h3 class="text-xl font-bold mb-4">Karte der Nullmessungen</h3>
+    <h3 class="text-xl font-bold mb-4">Karte der Messungen</h3>
     
     @if($project->nullMeasurements->count() > 0)
         <div id="map" class="w-full h-[600px] rounded-lg border"></div>
         
-        <div class="mt-4 text-sm text-gray-600">
-            <p><strong>Anzahl Punkte:</strong> {{ $project->nullMeasurements->count() }}</p>
-            <p class="mt-2"><strong>Hinweis:</strong> Die Koordinaten werden von LV95 (Swiss coordinates) zu WGS84 (GPS) konvertiert.</p>
+        <div class="mt-4 space-y-2">
+            <div class="flex items-center gap-4 text-sm">
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded-full bg-blue-500 border-2 border-white shadow"></div>
+                    <span><strong>Nullmessungen:</strong> {{ $project->nullMeasurements->count() }} Punkte</span>
+                </div>
+                @if($project->controlMeasurements->count() > 0)
+                <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow"></div>
+                    <span><strong>Letzte Kontrollmessungen:</strong> {{ $project->controlMeasurements->groupBy('punkt')->count() }} Punkte</span>
+                </div>
+                @endif
+            </div>
+            <p class="text-sm text-gray-600"><strong>Hinweis:</strong> Die Koordinaten werden von LV95 (Swiss coordinates) zu WGS84 (GPS) konvertiert.</p>
         </div>
     @else
         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
@@ -28,6 +39,42 @@ document.addEventListener('DOMContentLoaded', function() {
     let mapInitialized = false;
     let map = null;
 
+    function createCustomIcon(color) {
+        return L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
+            iconSize: [12, 12],
+            iconAnchor: [6, 6],
+            popupAnchor: [0, -6]
+        });
+    }
+
+    function createPopupContent(measurement, label) {
+        return `
+            <div class="p-2">
+                <h4 class="font-bold text-lg mb-2">${measurement.punkt}</h4>
+                <p class="text-xs text-gray-600 mb-2">${label}</p>
+                <table class="text-sm">
+                    <tr><td class="pr-2"><strong>E:</strong></td><td>${parseFloat(measurement.E).toFixed(3)}</td></tr>
+                    <tr><td class="pr-2"><strong>N:</strong></td><td>${parseFloat(measurement.N).toFixed(3)}</td></tr>
+                    <tr><td class="pr-2"><strong>H:</strong></td><td>${parseFloat(measurement.H).toFixed(3)}</td></tr>
+                    <tr><td class="pr-2"><strong>Datum:</strong></td><td>${measurement.date}</td></tr>
+                </table>
+            </div>
+        `;
+    }
+
+    function addMarkersToMap(measurements, color, label) {
+        const bounds = [];
+        measurements.forEach(measurement => {
+            const icon = createCustomIcon(color);
+            const marker = L.marker([measurement.lat, measurement.lng], { icon: icon }).addTo(map);
+            marker.bindPopup(createPopupContent(measurement, label));
+            bounds.push([measurement.lat, measurement.lng]);
+        });
+        return bounds;
+    }
+
     function initializeMap() {
         if (mapInitialized) return;
         
@@ -44,33 +91,21 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('{{ route('projects.map-data', $project) }}')
             .then(response => response.json())
             .then(data => {
-                if (data.length === 0) return;
-
-                const bounds = [];
+                let allBounds = [];
                 
-                data.forEach(measurement => {
-                    const marker = L.marker([measurement.lat, measurement.lng]).addTo(map);
-                    
-                    // Create popup with measurement details
-                    const popupContent = `
-                        <div class="p-2">
-                            <h4 class="font-bold text-lg mb-2">${measurement.punkt}</h4>
-                            <table class="text-sm">
-                                <tr><td class="pr-2"><strong>E:</strong></td><td>${parseFloat(measurement.E).toFixed(3)}</td></tr>
-                                <tr><td class="pr-2"><strong>N:</strong></td><td>${parseFloat(measurement.N).toFixed(3)}</td></tr>
-                                <tr><td class="pr-2"><strong>H:</strong></td><td>${parseFloat(measurement.H).toFixed(3)}</td></tr>
-                                <tr><td class="pr-2"><strong>Datum:</strong></td><td>${measurement.date}</td></tr>
-                            </table>
-                        </div>
-                    `;
-                    
-                    marker.bindPopup(popupContent);
-                    bounds.push([measurement.lat, measurement.lng]);
-                });
+                // Display null measurements (blue markers)
+                if (data.nullMeasurements && data.nullMeasurements.length > 0) {
+                    allBounds = allBounds.concat(addMarkersToMap(data.nullMeasurements, '#3b82f6', 'Nullmessung'));
+                }
+
+                // Display latest control measurements (red markers)
+                if (data.controlMeasurements && data.controlMeasurements.length > 0) {
+                    allBounds = allBounds.concat(addMarkersToMap(data.controlMeasurements, '#ef4444', 'Letzte Kontrollmessung'));
+                }
 
                 // Fit map to show all markers
-                if (bounds.length > 0) {
-                    map.fitBounds(bounds, { padding: [50, 50] });
+                if (allBounds.length > 0) {
+                    map.fitBounds(allBounds, { padding: [50, 50] });
                 }
             })
             .catch(error => {

@@ -91,23 +91,43 @@ class ProjectController extends Controller
     }
 
     /**
-     * Get null measurements with converted WGS84 coordinates for map display
+     * Get null measurements and latest control measurements with converted WGS84 coordinates for map display
      */
     public function mapData(Project $project)
     {
-        $measurements = $project->nullMeasurements->map(function ($measurement) {
-            $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
-            return [
-                'punkt' => $measurement->punkt,
-                'lat' => $coords['lat'],
-                'lng' => $coords['lng'],
-                'E' => $measurement->E,
-                'N' => $measurement->N,
-                'H' => $measurement->H,
-                'date' => $measurement->date->format('d.m.Y'),
-            ];
-        });
+        $data = [
+            'nullMeasurements' => $project->nullMeasurements->map(fn($m) => $this->formatMeasurementForMap($m, 'null'))->values(),
+            'controlMeasurements' => $this->getLatestControlMeasurements($project)->map(fn($m) => $this->formatMeasurementForMap($m, 'control'))->values(),
+        ];
 
-        return response()->json($measurements);
+        return response()->json($data);
+    }
+
+    /**
+     * Format a measurement for map display with WGS84 coordinates
+     */
+    private function formatMeasurementForMap($measurement, string $type): array
+    {
+        $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
+        return [
+            'punkt' => $measurement->punkt,
+            'lat' => $coords['lat'],
+            'lng' => $coords['lng'],
+            'E' => $measurement->E,
+            'N' => $measurement->N,
+            'H' => $measurement->H,
+            'date' => $measurement->date->format('d.m.Y'),
+            'type' => $type,
+        ];
+    }
+
+    /**
+     * Get the latest control measurement for each point
+     */
+    private function getLatestControlMeasurements(Project $project)
+    {
+        return $project->controlMeasurements
+            ->groupBy('punkt')
+            ->map(fn($measurements) => $measurements->sortByDesc('date')->first());
     }
 }

@@ -49,6 +49,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function createPopupContent(measurement, label) {
+        return `
+            <div class="p-2">
+                <h4 class="font-bold text-lg mb-2">${measurement.punkt}</h4>
+                <p class="text-xs text-gray-600 mb-2">${label}</p>
+                <table class="text-sm">
+                    <tr><td class="pr-2"><strong>E:</strong></td><td>${parseFloat(measurement.E).toFixed(3)}</td></tr>
+                    <tr><td class="pr-2"><strong>N:</strong></td><td>${parseFloat(measurement.N).toFixed(3)}</td></tr>
+                    <tr><td class="pr-2"><strong>H:</strong></td><td>${parseFloat(measurement.H).toFixed(3)}</td></tr>
+                    <tr><td class="pr-2"><strong>Datum:</strong></td><td>${measurement.date}</td></tr>
+                </table>
+            </div>
+        `;
+    }
+
+    function addMarkersToMap(measurements, color, label) {
+        const bounds = [];
+        measurements.forEach(measurement => {
+            const icon = createCustomIcon(color);
+            const marker = L.marker([measurement.lat, measurement.lng], { icon: icon }).addTo(map);
+            marker.bindPopup(createPopupContent(measurement, label));
+            bounds.push([measurement.lat, measurement.lng]);
+        });
+        return bounds;
+    }
+
     function initializeMap() {
         if (mapInitialized) return;
         
@@ -65,61 +91,21 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('{{ route('projects.map-data', $project) }}')
             .then(response => response.json())
             .then(data => {
-                const bounds = [];
+                let allBounds = [];
                 
                 // Display null measurements (blue markers)
                 if (data.nullMeasurements && data.nullMeasurements.length > 0) {
-                    data.nullMeasurements.forEach(measurement => {
-                        const icon = createCustomIcon('#3b82f6'); // blue
-                        const marker = L.marker([measurement.lat, measurement.lng], { icon: icon }).addTo(map);
-                        
-                        // Create popup with measurement details
-                        const popupContent = `
-                            <div class="p-2">
-                                <h4 class="font-bold text-lg mb-2">${measurement.punkt}</h4>
-                                <p class="text-xs text-gray-600 mb-2">Nullmessung</p>
-                                <table class="text-sm">
-                                    <tr><td class="pr-2"><strong>E:</strong></td><td>${parseFloat(measurement.E).toFixed(3)}</td></tr>
-                                    <tr><td class="pr-2"><strong>N:</strong></td><td>${parseFloat(measurement.N).toFixed(3)}</td></tr>
-                                    <tr><td class="pr-2"><strong>H:</strong></td><td>${parseFloat(measurement.H).toFixed(3)}</td></tr>
-                                    <tr><td class="pr-2"><strong>Datum:</strong></td><td>${measurement.date}</td></tr>
-                                </table>
-                            </div>
-                        `;
-                        
-                        marker.bindPopup(popupContent);
-                        bounds.push([measurement.lat, measurement.lng]);
-                    });
+                    allBounds = allBounds.concat(addMarkersToMap(data.nullMeasurements, '#3b82f6', 'Nullmessung'));
                 }
 
                 // Display latest control measurements (red markers)
                 if (data.controlMeasurements && data.controlMeasurements.length > 0) {
-                    data.controlMeasurements.forEach(measurement => {
-                        const icon = createCustomIcon('#ef4444'); // red
-                        const marker = L.marker([measurement.lat, measurement.lng], { icon: icon }).addTo(map);
-                        
-                        // Create popup with measurement details
-                        const popupContent = `
-                            <div class="p-2">
-                                <h4 class="font-bold text-lg mb-2">${measurement.punkt}</h4>
-                                <p class="text-xs text-gray-600 mb-2">Letzte Kontrollmessung</p>
-                                <table class="text-sm">
-                                    <tr><td class="pr-2"><strong>E:</strong></td><td>${parseFloat(measurement.E).toFixed(3)}</td></tr>
-                                    <tr><td class="pr-2"><strong>N:</strong></td><td>${parseFloat(measurement.N).toFixed(3)}</td></tr>
-                                    <tr><td class="pr-2"><strong>H:</strong></td><td>${parseFloat(measurement.H).toFixed(3)}</td></tr>
-                                    <tr><td class="pr-2"><strong>Datum:</strong></td><td>${measurement.date}</td></tr>
-                                </table>
-                            </div>
-                        `;
-                        
-                        marker.bindPopup(popupContent);
-                        bounds.push([measurement.lat, measurement.lng]);
-                    });
+                    allBounds = allBounds.concat(addMarkersToMap(data.controlMeasurements, '#ef4444', 'Letzte Kontrollmessung'));
                 }
 
                 // Fit map to show all markers
-                if (bounds.length > 0) {
-                    map.fitBounds(bounds, { padding: [50, 50] });
+                if (allBounds.length > 0) {
+                    map.fitBounds(allBounds, { padding: [50, 50] });
                 }
             })
             .catch(error => {

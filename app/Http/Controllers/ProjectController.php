@@ -96,46 +96,38 @@ class ProjectController extends Controller
     public function mapData(Project $project)
     {
         $data = [
-            'nullMeasurements' => [],
-            'controlMeasurements' => [],
+            'nullMeasurements' => $project->nullMeasurements->map(fn($m) => $this->formatMeasurementForMap($m, 'null'))->values(),
+            'controlMeasurements' => $this->getLatestControlMeasurements($project)->map(fn($m) => $this->formatMeasurementForMap($m, 'control'))->values(),
         ];
 
-        // Add null measurements
-        $data['nullMeasurements'] = $project->nullMeasurements->map(function ($measurement) {
-            $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
-            return [
-                'punkt' => $measurement->punkt,
-                'lat' => $coords['lat'],
-                'lng' => $coords['lng'],
-                'E' => $measurement->E,
-                'N' => $measurement->N,
-                'H' => $measurement->H,
-                'date' => $measurement->date->format('d.m.Y'),
-                'type' => 'null',
-            ];
-        })->values();
-
-        // Get the latest control measurement for each point
-        $latestControlMeasurements = $project->controlMeasurements
-            ->groupBy('punkt')
-            ->map(function ($measurements) {
-                return $measurements->sortByDesc('date')->first();
-            });
-
-        $data['controlMeasurements'] = $latestControlMeasurements->map(function ($measurement) {
-            $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
-            return [
-                'punkt' => $measurement->punkt,
-                'lat' => $coords['lat'],
-                'lng' => $coords['lng'],
-                'E' => $measurement->E,
-                'N' => $measurement->N,
-                'H' => $measurement->H,
-                'date' => $measurement->date->format('d.m.Y'),
-                'type' => 'control',
-            ];
-        })->values();
-
         return response()->json($data);
+    }
+
+    /**
+     * Format a measurement for map display with WGS84 coordinates
+     */
+    private function formatMeasurementForMap($measurement, string $type): array
+    {
+        $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
+        return [
+            'punkt' => $measurement->punkt,
+            'lat' => $coords['lat'],
+            'lng' => $coords['lng'],
+            'E' => $measurement->E,
+            'N' => $measurement->N,
+            'H' => $measurement->H,
+            'date' => $measurement->date->format('d.m.Y'),
+            'type' => $type,
+        ];
+    }
+
+    /**
+     * Get the latest control measurement for each point
+     */
+    private function getLatestControlMeasurements(Project $project)
+    {
+        return $project->controlMeasurements
+            ->groupBy('punkt')
+            ->map(fn($measurements) => $measurements->sortByDesc('date')->first());
     }
 }

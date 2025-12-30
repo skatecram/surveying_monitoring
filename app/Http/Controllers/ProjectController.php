@@ -91,11 +91,17 @@ class ProjectController extends Controller
     }
 
     /**
-     * Get null measurements with converted WGS84 coordinates for map display
+     * Get null measurements and latest control measurements with converted WGS84 coordinates for map display
      */
     public function mapData(Project $project)
     {
-        $measurements = $project->nullMeasurements->map(function ($measurement) {
+        $data = [
+            'nullMeasurements' => [],
+            'controlMeasurements' => [],
+        ];
+
+        // Add null measurements
+        $data['nullMeasurements'] = $project->nullMeasurements->map(function ($measurement) {
             $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
             return [
                 'punkt' => $measurement->punkt,
@@ -105,9 +111,31 @@ class ProjectController extends Controller
                 'N' => $measurement->N,
                 'H' => $measurement->H,
                 'date' => $measurement->date->format('d.m.Y'),
+                'type' => 'null',
             ];
-        });
+        })->values();
 
-        return response()->json($measurements);
+        // Get the latest control measurement for each point
+        $latestControlMeasurements = $project->controlMeasurements
+            ->groupBy('punkt')
+            ->map(function ($measurements) {
+                return $measurements->sortByDesc('date')->first();
+            });
+
+        $data['controlMeasurements'] = $latestControlMeasurements->map(function ($measurement) {
+            $coords = CoordinateConverter::lv95ToWgs84($measurement->E, $measurement->N);
+            return [
+                'punkt' => $measurement->punkt,
+                'lat' => $coords['lat'],
+                'lng' => $coords['lng'],
+                'E' => $measurement->E,
+                'N' => $measurement->N,
+                'H' => $measurement->H,
+                'date' => $measurement->date->format('d.m.Y'),
+                'type' => 'control',
+            ];
+        })->values();
+
+        return response()->json($data);
     }
 }
